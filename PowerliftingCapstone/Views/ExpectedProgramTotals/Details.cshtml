@@ -1,0 +1,42 @@
+﻿@model PowerliftingCapstone.Models.ExpectedProgramTotal
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ExpectedProgramTotal</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Exercise)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Exercise)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reps)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reps)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ExpectedTotalId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

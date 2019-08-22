@@ -1,0 +1,74 @@
+﻿@model PowerliftingCapstone.Models.Lift
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Lift</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SetOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SetOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkoutId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkoutId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Exercise)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Exercise)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OneRMPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OneRMPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reps)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reps)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Completed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Completed)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProgramId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

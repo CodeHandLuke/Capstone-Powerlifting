@@ -1,0 +1,74 @@
+﻿@model PowerliftingCapstone.Models.OneRepMax
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>OneRepMax</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Squat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Squat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bench)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bench)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deadlift)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deadlift)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Wilks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Wilks)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OneRepMaxId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

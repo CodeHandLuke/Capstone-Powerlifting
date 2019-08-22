@@ -1,0 +1,69 @@
+﻿@model IEnumerable<PowerliftingCapstone.Models.Lift>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SetOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkoutId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Exercise)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OneRMPercentage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reps)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Completed)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SetOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkoutId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exercise)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OneRMPercentage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reps)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Completed)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProgramId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProgramId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProgramId })
+        </td>
+    </tr>
+}
+
+</table>
