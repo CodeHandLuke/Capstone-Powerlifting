@@ -19,7 +19,7 @@ namespace PowerliftingCapstone.Models
 		[Display(Name = "Sex(Male or Female)")]
 		public string Sex { get; set; }
 		[Display(Name = "Weight(kg)")]
-		public int Weight { get; set; }
+		public double Weight { get; set; }
 		public double Wilks { get; set; }
 		public int? WorkoutOfDay { get; set; }
 		[ForeignKey("ApplicationUser")]
