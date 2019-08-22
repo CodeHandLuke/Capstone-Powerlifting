@@ -194,6 +194,10 @@
     <Compile Include="Migrations\201908221854254_WeightChange.Designer.cs">
       <DependentUpon>201908221854254_WeightChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908222045028_UpdatedLifts.cs" />
+    <Compile Include="Migrations\201908222045028_UpdatedLifts.Designer.cs">
+      <DependentUpon>201908222045028_UpdatedLifts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActualProgramTotal.cs" />
@@ -338,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908221854254_WeightChange.resx">
       <DependentUpon>201908221854254_WeightChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908222045028_UpdatedLifts.resx">
+      <DependentUpon>201908222045028_UpdatedLifts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

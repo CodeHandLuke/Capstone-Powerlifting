@@ -14,7 +14,7 @@ namespace PowerliftingCapstone.Models
 		public int WorkoutId { get; set; }
 		public string Exercise { get; set; }
 		[Display(Name = "%1RM")]
-		public int OneRMPercentage { get; set; }
+		public int? OneRMPercentage { get; set; }
 		public int? Reps { get; set; }
 		[Display(Name = "Weight(kg)")]
 		public double? Weight { get; set; }

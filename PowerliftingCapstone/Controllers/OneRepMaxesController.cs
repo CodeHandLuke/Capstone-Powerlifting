@@ -63,7 +63,6 @@ namespace PowerliftingCapstone.Controllers
 				var wilksCoefficient = CalcuateWilks(oneRepMax.Total);
 				oneRepMax.Wilks = Math.Round(wilksCoefficient, 2);
 				currentUser.Wilks = oneRepMax.Wilks;
-				db.UserProfiles.Add(currentUser);
 				oneRepMax.UserId = currentUser.UserProfileId;
                 db.OneRepMaxes.Add(oneRepMax);
                 db.SaveChanges();
@@ -167,7 +166,7 @@ namespace PowerliftingCapstone.Controllers
             return RedirectToAction("Index");
         }
 
-		public ActionResult LeaderboardIndex()
+		public ActionResult Leaderboard()
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
