@@ -123,7 +123,6 @@ namespace PowerliftingCapstone.Controllers
 		//This method will be used to calculate the how heavy each lift has to be using the lifter's one rep max
 		public void DetermineLiftWeights() 
 		{
-			bool weightCalculated = true;
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
 			var oneRepMaxList = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserProfileId).ToList();
@@ -132,25 +131,25 @@ namespace PowerliftingCapstone.Controllers
 			var benchMax = oneRepMax.Bench;
 			var deadMax = oneRepMax.Deadlift;
 			var foundLifts = db.Lifts.ToList();
-			if (weightCalculated)
+			foreach (var item in foundLifts)
 			{
-				foreach (var item in foundLifts)
+				var oneRepMaxMultiplier = item.OneRMPercentage * .01;
+				if (item.Exercise == "Squat")
 				{
-					var oneRepMaxMultiplier = item.OneRMPercentage * .01;
-					if (item.Exercise == "Squat")
-					{
-						item.Weight = squatM * oneRepMaxMultiplier;
-					}
+					item.Weight = squatM * oneRepMaxMultiplier;
+					db.SaveChanges();
+				}
 
-					else if (item.Exercise == "Bench")
-					{
-						item.Weight = benchMax * oneRepMaxMultiplier;
-					}
+				else if (item.Exercise == "Benchpress")
+				{
+					item.Weight = benchMax * oneRepMaxMultiplier;
+					db.SaveChanges();
+				}
 
-					else if (item.Exercise == "Deadlift")
-					{
-						item.Weight = deadMax * oneRepMaxMultiplier;
-					}
+				else if (item.Exercise == "Deadlift")
+				{
+					item.Weight = deadMax * oneRepMaxMultiplier;
+					db.SaveChanges();
 				}
 			}
 		}
