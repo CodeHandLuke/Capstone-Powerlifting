@@ -58,11 +58,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.Wilks)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OneRepMaxId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OneRepMaxId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OneRepMaxId })
-        </td>
+		<td>
+			@Html.ActionLink("Edit", "Edit", new { id = item.OneRepMaxId }) |
+			@Html.ActionLink("Details", "Details", new { id = item.OneRepMaxId }) |
+			@Html.ActionLink("Delete", "Delete", new { id = item.OneRepMaxId }) |
+			@Html.ActionLink("Share", "ShareableMax", new { id = item.OneRepMaxId })
+		</td>
     </tr>
 }
 

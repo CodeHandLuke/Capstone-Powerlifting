@@ -1,0 +1,78 @@
+﻿@model PowerliftingCapstone.Models.OneRepMax
+
+@{
+	ViewBag.Title = "ShareableMax";
+}
+
+<h2>Share Max</h2>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+<div>
+	<h4>One-Rep Max</h4>
+	<hr />
+	<div id="fb-root"></div>
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v4.0"></script>
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.User.FirstName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.User.FirstName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Date)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Date)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Squat)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Squat)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Bench)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Bench)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Deadlift)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Deadlift)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Total)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Total)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Wilks)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Wilks)
+		</dd>
+
+	</dl>
+</div>
+<p>
+	<div class="fb-share-button" data-href="https://localhost:44302/OneRepMaxes/ShareableMax/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44302%2FOneRepMaxes%2FShareableMax%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+</p>

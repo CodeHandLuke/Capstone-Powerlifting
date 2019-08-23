@@ -19,5 +19,6 @@ namespace PowerliftingCapstone.Models
 		[Display(Name = "Weight(kg)")]
 		public double? Weight { get; set; }
 		public bool Completed { get; set; }
+		public string Notes { get; set; }
 	}
 }

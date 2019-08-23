@@ -1,19 +1,22 @@
 ﻿@model IEnumerable<PowerliftingCapstone.Models.Lift>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "DailyWorkout";
 }
 
-<h2>Index</h2>
+<h2>DailyWorkout</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.SetOrder)
         </th>
-        @*<th>
+        <th>
             @Html.DisplayNameFor(model => model.WorkoutId)
-        </th>*@
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Exercise)
         </th>
@@ -37,9 +40,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.SetOrder)
         </td>
-        @*<td>
+        <td>
             @Html.DisplayFor(modelItem => item.WorkoutId)
-        </td>*@
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Exercise)
         </td>
@@ -56,13 +59,11 @@
             @Html.DisplayFor(modelItem => item.Completed)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProgramId })
-            @*@Html.ActionLink("Details", "Details", new { id=item.ProgramId })*@ 
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.ProgramId })*@
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProgramId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProgramId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProgramId })
         </td>
     </tr>
 }
 
 </table>
-
-<input type="button" value="Complete Workout" onclick="location.href='@Url.Action("CompleteWorkout", "Lifts")'" />

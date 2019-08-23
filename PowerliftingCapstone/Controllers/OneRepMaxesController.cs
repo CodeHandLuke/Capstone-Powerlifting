@@ -15,14 +15,28 @@ namespace PowerliftingCapstone.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: OneRepMaxes
-        public ActionResult Index()
+		// GET: OneRepMaxes
+		public ActionResult Index()
         {
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
             var oneRepMaxes = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserProfileId);
             return View(oneRepMaxes.ToList());
         }
+
+		public ActionResult ShareableMax(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			OneRepMax oneRepMax = db.OneRepMaxes.Find(id);
+			if (oneRepMax == null)
+			{
+				return HttpNotFound();
+			}
+			return View(oneRepMax);
+		}
 
         // GET: OneRepMaxes/Details/5
         public ActionResult Details(int? id)
@@ -59,7 +73,7 @@ namespace PowerliftingCapstone.Controllers
 				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
 
 				oneRepMax.Date = DateTime.Now;
-				oneRepMax.Total = oneRepMax.Squat + oneRepMax.Bench + oneRepMax.Squat;
+				oneRepMax.Total = oneRepMax.Squat + oneRepMax.Bench + oneRepMax.Deadlift;
 				var wilksCoefficient = CalcuateWilks(oneRepMax.Total);
 				oneRepMax.Wilks = Math.Round(wilksCoefficient, 2);
 				currentUser.Wilks = oneRepMax.Wilks;

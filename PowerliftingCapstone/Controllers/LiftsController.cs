@@ -25,8 +25,8 @@ namespace PowerliftingCapstone.Controllers
 			return View(lifts.ToList());
         }
 
-        // GET: Lifts/Details/5
-        public ActionResult Details(int? id)
+		// GET: Lifts/Details/5
+		public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -146,11 +146,30 @@ namespace PowerliftingCapstone.Controllers
 					db.SaveChanges();
 				}
 
-				else if (item.Exercise == "Deadlift")
+				else if (item.Exercise == "Deadlift" || item.Exercise == "Deadlift^Knee" || item.Exercise == "Def Deadlift" || item.Exercise == "Rackpull")
 				{
 					item.Weight = deadMax * oneRepMaxMultiplier;
 					db.SaveChanges();
 				}
+			}
+		}
+
+		public ActionResult CompleteWorkout() //maybe also write code here to save the workout
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			if (currentUser.WorkoutOfDay < 4)
+			{
+				currentUser.WorkoutOfDay++;
+				db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+
+			else
+			{
+				currentUser.WorkoutOfDay = 1;
+				db.SaveChanges();
+				return RedirectToAction("Index");
 			}
 		}
 

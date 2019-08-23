@@ -316,6 +316,8 @@
     <Content Include="Views\WorkoutSerializations\Edit.cshtml" />
     <Content Include="Views\WorkoutSerializations\Index.cshtml" />
     <Content Include="Views\OneRepMaxes\Leaderboard.cshtml" />
+    <Content Include="Views\OneRepMaxes\ShareableMax.cshtml" />
+    <Content Include="Views\Lifts\DailyWorkout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
