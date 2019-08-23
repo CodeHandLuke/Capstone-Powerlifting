@@ -19,6 +19,7 @@ namespace PowerliftingCapstone.Models
 		[Display(Name = "Weight(kg)")]
 		public double? Weight { get; set; }
 		public int WorkoutId { get; set; }
+		public string Notes { get; set; }
 		[ForeignKey(nameof(User))]
 		public int UserId { get; set; }
 		public UserProfile User { get; set; }

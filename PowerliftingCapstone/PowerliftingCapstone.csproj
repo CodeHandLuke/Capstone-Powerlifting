@@ -198,6 +198,14 @@
     <Compile Include="Migrations\201908222045028_UpdatedLifts.Designer.cs">
       <DependentUpon>201908222045028_UpdatedLifts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908231928310_UpdatedLiftModel.cs" />
+    <Compile Include="Migrations\201908231928310_UpdatedLiftModel.Designer.cs">
+      <DependentUpon>201908231928310_UpdatedLiftModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908232055378_UpdatedSavedWorkout.cs" />
+    <Compile Include="Migrations\201908232055378_UpdatedSavedWorkout.Designer.cs">
+      <DependentUpon>201908232055378_UpdatedSavedWorkout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActualProgramTotal.cs" />
@@ -347,6 +355,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908222045028_UpdatedLifts.resx">
       <DependentUpon>201908222045028_UpdatedLifts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908231928310_UpdatedLiftModel.resx">
+      <DependentUpon>201908231928310_UpdatedLiftModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908232055378_UpdatedSavedWorkout.resx">
+      <DependentUpon>201908232055378_UpdatedSavedWorkout.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
