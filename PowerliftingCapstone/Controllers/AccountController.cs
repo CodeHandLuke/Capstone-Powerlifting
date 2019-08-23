@@ -12,10 +12,12 @@ using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
 {
+
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
+		private ApplicationDbContext db = new ApplicationDbContext();
+		private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public AccountController()
@@ -155,7 +157,9 @@ namespace PowerliftingCapstone.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+					SeedLiftsTable();
+
+					await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -172,9 +176,250 @@ namespace PowerliftingCapstone.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
+		int setOrder = 1;
+
+		public void SeedLiftsTable()
+		{
+			var liftsCount = db.Lifts.Count();
+			if (liftsCount < 45)
+			{
+				SeedWorkoutTableDayOne();
+				SeedWorkoutTableDayTwo();
+				SeedWorkoutTableDayThree();
+				SeedWorkoutTableDayFour();
+			}
+		}
+		public void SeedWorkoutTableDayOne()
+		{
+			SeedWorkoutTableSquat();
+			SeedWorkoutTableBench();
+			SeedWorkoutTableSquatSetTwo();
+			setOrder = 1;
+		}
+		public void SeedWorkoutTableSquat()
+		{
+			var squatSets = 5;
+			for (int i = 0; i < squatSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 1;
+				newLift.Exercise = "Squat";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 5;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableBench()
+		{
+			var benchSets = 5;
+			for (int i = 0; i < benchSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 1;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 5;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableSquatSetTwo()
+		{
+			var squatSets = 5;
+			for (int i = 0; i < squatSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 1;
+				newLift.Exercise = "Squat";
+				newLift.OneRMPercentage = 70;
+				newLift.Reps = 2;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDayTwo()
+		{
+			SeedWorkoutTableDeadlift();
+			SeedWorkoutTableBenchTwo();
+			SeedWorkoutTableDeadliftTwo();
+			setOrder = 1;
+		}
+
+		public void SeedWorkoutTableDeadlift()
+		{
+			var deadSets = 5;
+			for (int i = 0; i < deadSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 2;
+				newLift.Exercise = "Deadlift";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 5;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableBenchTwo()
+		{
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 2;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 6;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDeadliftTwo()
+		{
+			var sets = 4;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 2;
+				newLift.Exercise = "Deadlift^Knee";
+				newLift.OneRMPercentage = 70;
+				newLift.Reps = 4;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDayThree()
+		{
+			SeedWorkoutTableBenchThree();
+			SeedWorkoutTableSquatThree();
+			SeedWorkoutTableBenchThreeTwo();
+			setOrder = 1;
+		}
+
+		public void SeedWorkoutTableBenchThree()
+		{
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 3;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 80;
+				newLift.Reps = 3;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableSquatThree()
+		{
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 3;
+				newLift.Exercise = "Squat";
+				newLift.OneRMPercentage = 80;
+				newLift.Reps = 3;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableBenchThreeTwo()
+		{
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 3;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 75;
+				newLift.Reps = 3;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDayFour()
+		{
+			SeedWorkoutTableDeadliftFour();
+			SeedWorkoutTableRackpull();
+			setOrder = 1;
+		}
+
+		public void SeedWorkoutTableDeadliftFour()
+		{
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 4;
+				newLift.Exercise = "Def Deadlift";
+				newLift.OneRMPercentage = 60;
+				newLift.Reps = 2;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableRackpull()
+		{
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 4;
+				newLift.Exercise = "Rackpull";
+				newLift.OneRMPercentage = 75;
+				newLift.Reps = 4;
+				newLift.Completed = false;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		//
+		// GET: /Account/ConfirmEmail
+		[AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
