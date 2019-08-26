@@ -10,7 +10,7 @@ namespace PowerliftingCapstone.Models
 	public class UserProfile
 	{
 		[Key]
-		public int UserProfileId { get; set; }
+		public int UserId { get; set; }
 		[Display(Name = "First Name")]
 		public string FirstName { get; set; }
 		[Display(Name = "Last Name")]

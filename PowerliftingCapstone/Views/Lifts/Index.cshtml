@@ -69,7 +69,7 @@
 <div><input type="button" value="Complete Workout" onclick="location.href='@Url.Action("CompleteWorkout", "Lifts")'" /></div>
 <input type="button" value="Start Rest Timer" onclick="startTimer()" />
 <div id="counter"></div>
-
+<div>@Html.ActionLink("Graphs", "RepsBarGraph")</div>
 <script>
 	function startTimer() {
 		var defaultTimer = 90, // Default amount of seconds if url variable is not found

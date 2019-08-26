@@ -3,7 +3,7 @@ namespace PowerliftingCapstone.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class RecreateMigration : DbMigration
+    public partial class InitialMigration : DbMigration
     {
         public override void Up()
         {
@@ -25,7 +25,7 @@ namespace PowerliftingCapstone.Migrations
                 "dbo.UserProfiles",
                 c => new
                     {
-                        UserProfileId = c.Int(nullable: false, identity: true),
+                        UserId = c.Int(nullable: false, identity: true),
                         FirstName = c.String(),
                         LastName = c.String(),
                         Age = c.Int(nullable: false),
@@ -35,7 +35,7 @@ namespace PowerliftingCapstone.Migrations
                         WorkoutOfDay = c.Int(),
                         ApplicationId = c.String(maxLength: 128),
                     })
-                .PrimaryKey(t => t.UserProfileId)
+                .PrimaryKey(t => t.UserId)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationId)
                 .Index(t => t.ApplicationId);
             
@@ -103,10 +103,13 @@ namespace PowerliftingCapstone.Migrations
                     {
                         ExpectedTotalId = c.Int(nullable: false, identity: true),
                         Exercise = c.String(),
-                        Reps = c.Int(nullable: false),
-                        Weight = c.Double(nullable: false),
+                        Reps = c.Int(),
+                        Weight = c.Double(),
+                        UserId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.ExpectedTotalId);
+                .PrimaryKey(t => t.ExpectedTotalId)
+                .ForeignKey("dbo.UserProfiles", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.Lifts",
@@ -174,7 +177,7 @@ namespace PowerliftingCapstone.Migrations
                         SavedWorkoutId = c.Int(nullable: false, identity: true),
                         Date = c.DateTime(nullable: false),
                         Exercise = c.String(),
-                        OneRMPercentage = c.Int(nullable: false),
+                        OneRMPercentage = c.Int(),
                         Reps = c.Int(),
                         Weight = c.Double(),
                         WorkoutId = c.Int(nullable: false),
@@ -220,6 +223,7 @@ namespace PowerliftingCapstone.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.OneRepMaxes", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.Lifts", "UserId", "dbo.UserProfiles");
+            DropForeignKey("dbo.ExpectedProgramTotals", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.ActualProgramTotals", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.UserProfiles", "ApplicationId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
@@ -231,6 +235,7 @@ namespace PowerliftingCapstone.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.OneRepMaxes", new[] { "UserId" });
             DropIndex("dbo.Lifts", new[] { "UserId" });
+            DropIndex("dbo.ExpectedProgramTotals", new[] { "UserId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });

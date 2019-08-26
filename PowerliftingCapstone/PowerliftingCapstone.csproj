@@ -183,17 +183,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201908261349262_RecreateMigration.cs" />
-    <Compile Include="Migrations\201908261349262_RecreateMigration.Designer.cs">
-      <DependentUpon>201908261349262_RecreateMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908261526264_UpdatedNullProperty.cs" />
-    <Compile Include="Migrations\201908261526264_UpdatedNullProperty.Designer.cs">
-      <DependentUpon>201908261526264_UpdatedNullProperty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908261625087_UpdatingProgramTotals.cs" />
-    <Compile Include="Migrations\201908261625087_UpdatingProgramTotals.Designer.cs">
-      <DependentUpon>201908261625087_UpdatingProgramTotals.cs</DependentUpon>
+    <Compile Include="Migrations\201908261850330_InitialMigration.cs" />
+    <Compile Include="Migrations\201908261850330_InitialMigration.Designer.cs">
+      <DependentUpon>201908261850330_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -315,6 +307,8 @@
     <Content Include="Views\OneRepMaxes\Leaderboard.cshtml" />
     <Content Include="Views\OneRepMaxes\ShareableMax.cshtml" />
     <Content Include="Views\Lifts\DailyWorkout.cshtml" />
+    <Content Include="Views\UserProfiles\RepsBarGraph.cshtml" />
+    <Content Include="Views\Lifts\RepsBarGraph.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -333,14 +327,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201908261349262_RecreateMigration.resx">
-      <DependentUpon>201908261349262_RecreateMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908261526264_UpdatedNullProperty.resx">
-      <DependentUpon>201908261526264_UpdatedNullProperty.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908261625087_UpdatingProgramTotals.resx">
-      <DependentUpon>201908261625087_UpdatingProgramTotals.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908261850330_InitialMigration.resx">
+      <DependentUpon>201908261850330_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

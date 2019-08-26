@@ -39,7 +39,7 @@ namespace PowerliftingCapstone.Controllers
         // GET: ActualProgramTotals/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName");
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace PowerliftingCapstone.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", actualProgramTotal.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", actualProgramTotal.UserId);
             return View(actualProgramTotal);
         }
 
@@ -73,7 +73,7 @@ namespace PowerliftingCapstone.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", actualProgramTotal.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", actualProgramTotal.UserId);
             return View(actualProgramTotal);
         }
 
@@ -90,7 +90,7 @@ namespace PowerliftingCapstone.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", actualProgramTotal.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", actualProgramTotal.UserId);
             return View(actualProgramTotal);
         }
 

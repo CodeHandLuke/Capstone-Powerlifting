@@ -53,7 +53,7 @@ namespace PowerliftingCapstone.Controllers
             {
 				var appUserId = User.Identity.GetUserId();
 				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-				savedWorkoutDateTime.UserId = currentUser.UserProfileId;
+				savedWorkoutDateTime.UserId = currentUser.UserId;
 				db.SavedWorkoutDateTimes.Add(savedWorkoutDateTime);
                 db.SaveChanges();
                 return RedirectToAction("Index");

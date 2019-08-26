@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Windows;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
@@ -21,13 +22,13 @@ namespace PowerliftingCapstone.Controllers
         {
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserProfileId).Count();
+			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserId).Count();
 			if (oneRepMaxCount < 1)
 			{
 				MessageBox.Show("Please input your one-rep maxes to initialize your workout!");
 				return RedirectToAction("Index", "OneRepMaxes");
 			}
-			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay);
+			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay && o.UserId == currentUser.UserId);
 			return View(lifts.ToList());
         }
 
@@ -36,7 +37,7 @@ namespace PowerliftingCapstone.Controllers
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
 			DetermineLiftWeights();
-			DetermineExpectedProgramTotals(currentUser.UserProfileId);
+			DetermineExpectedProgramTotals(currentUser.UserId);
 			return RedirectToAction("Index");
 		}
 
@@ -72,7 +73,7 @@ namespace PowerliftingCapstone.Controllers
             {
 				var appUserId = User.Identity.GetUserId();
 				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-				lift.UserId = currentUser.UserProfileId;
+				lift.UserId = currentUser.UserId;
 				db.Lifts.Add(lift);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -101,7 +102,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes")] Lift lift)
+        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes,UserId")] Lift lift)
         {
             if (ModelState.IsValid)
             {
@@ -144,8 +145,8 @@ namespace PowerliftingCapstone.Controllers
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserProfileId).Count();
-			var oneRepMaxList = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserProfileId).ToList();
+			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserId).Count();
+			var oneRepMaxList = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserId).ToList();
 			var oneRepMax = oneRepMaxList.LastOrDefault();
 			var squatM = oneRepMax.Squat;
 			var benchMax = oneRepMax.Bench;
@@ -174,7 +175,7 @@ namespace PowerliftingCapstone.Controllers
 			}
 		}
 
-		public ActionResult CompleteWorkout() //maybe also write code here to save the workout
+		public ActionResult CompleteWorkout() 
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
@@ -183,8 +184,8 @@ namespace PowerliftingCapstone.Controllers
 			{
 				if (currentUser.WorkoutOfDay < 4)
 				{
-					SaveWorkout(currentUser.UserProfileId, currentUser.WorkoutOfDay);
-					SaveProgramTotals(currentUser.UserProfileId, currentUser.WorkoutOfDay);
+					SaveWorkout(currentUser.UserId, currentUser.WorkoutOfDay);
+					SaveProgramTotals(currentUser.UserId, currentUser.WorkoutOfDay);
 					currentUser.WorkoutOfDay++;
 					db.SaveChanges();
 					return RedirectToAction("Index");
@@ -192,8 +193,8 @@ namespace PowerliftingCapstone.Controllers
 
 				else
 				{
-					SaveWorkout(currentUser.UserProfileId, currentUser.WorkoutOfDay);
-					SaveProgramTotals(currentUser.UserProfileId, currentUser.WorkoutOfDay);
+					SaveWorkout(currentUser.UserId, currentUser.WorkoutOfDay);
+					SaveProgramTotals(currentUser.UserId, currentUser.WorkoutOfDay);
 					currentUser.WorkoutOfDay = 1;
 					db.SaveChanges();
 					return RedirectToAction("Index");
@@ -224,12 +225,16 @@ namespace PowerliftingCapstone.Controllers
 						programTotals.UserId = userId;
 						db.ActualProgramTotals.Add(programTotals);
 						db.SaveChanges();
+						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Squat").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
+						db.SaveChanges();
 					}
 					else
 					{
 						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Squat").FirstOrDefault();
 						foundProgramTotals.Reps += item.Reps;
-						foundProgramTotals.Weight += item.Weight;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
 						db.SaveChanges();
 					}
 				}
@@ -245,12 +250,16 @@ namespace PowerliftingCapstone.Controllers
 						programTotals.UserId = userId;
 						db.ActualProgramTotals.Add(programTotals);
 						db.SaveChanges();
+						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Benchpress").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
+						db.SaveChanges();
 					}
 					else
 					{
 						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Benchpress").FirstOrDefault();
 						foundProgramTotals.Reps += item.Reps;
-						foundProgramTotals.Weight += item.Weight;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
 						db.SaveChanges();
 					}
 				}
@@ -266,12 +275,16 @@ namespace PowerliftingCapstone.Controllers
 						programTotals.UserId = userId;
 						db.ActualProgramTotals.Add(programTotals);
 						db.SaveChanges();
+						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Deadlift").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
+						db.SaveChanges();
 					}
 					else
 					{
 						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Deadlift").FirstOrDefault();
 						foundProgramTotals.Reps += item.Reps;
-						foundProgramTotals.Weight += item.Weight;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
 						db.SaveChanges();
 					}
 				}
@@ -334,12 +347,16 @@ namespace PowerliftingCapstone.Controllers
 						programTotals.UserId = userId;
 						db.ExpectedProgramTotals.Add(programTotals);
 						db.SaveChanges();
+						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Squat").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
+						db.SaveChanges();
 					}
 					else
 					{
 						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Squat").FirstOrDefault();
 						foundProgramTotals.Reps += item.Reps;
-						foundProgramTotals.Weight += item.Weight;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
 						db.SaveChanges();
 					}
 				}
@@ -355,12 +372,16 @@ namespace PowerliftingCapstone.Controllers
 						programTotals.UserId = userId;
 						db.ExpectedProgramTotals.Add(programTotals);
 						db.SaveChanges();
+						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Benchpress").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
+						db.SaveChanges();
 					}
 					else
 					{
 						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Benchpress").FirstOrDefault();
 						foundProgramTotals.Reps += item.Reps;
-						foundProgramTotals.Weight += item.Weight;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
 						db.SaveChanges();
 					}
 				}
@@ -376,12 +397,16 @@ namespace PowerliftingCapstone.Controllers
 						programTotals.UserId = userId;
 						db.ExpectedProgramTotals.Add(programTotals);
 						db.SaveChanges();
+						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Deadlift").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
+						db.SaveChanges();
 					}
 					else
 					{
 						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Deadlift").FirstOrDefault();
 						foundProgramTotals.Reps += item.Reps;
-						foundProgramTotals.Weight += item.Weight;
+						foundProgramTotals.Weight += item.Weight * item.Reps;
 						db.SaveChanges();
 					}
 				}
@@ -397,5 +422,105 @@ namespace PowerliftingCapstone.Controllers
             }
             base.Dispose(disposing);
         }
-    }
+
+		//***Testing graphs, maybe move to different controller after successfully tested
+
+		public ActionResult RepsBarGraph()
+		{
+			return View();
+		}
+
+		public ActionResult WeightBarGraph()
+		{
+			return View();
+		}
+
+		public string CreateRepsGraph()
+		{
+			List<RepsPercentageViewModel> totalRepsPercentage = new List<RepsPercentageViewModel>();
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var id = currentUser.UserId;
+			var actualReps = db.ActualProgramTotals.Where(a => a.UserId == id).ToList();
+			foreach (var item in actualReps)
+			{
+				if (item.Exercise == "Squat")
+				{
+					var expectedReps = db.ExpectedProgramTotals.Where(e => e.UserId == id && e.Exercise == "Squat").FirstOrDefault();
+					int? completedPercentage = CalculatePercentage(item.Reps, expectedReps.Reps);
+					RepsPercentageViewModel totalRepsGraph = new RepsPercentageViewModel();
+					totalRepsGraph.Exercise = item.Exercise;
+					totalRepsGraph.TotalReps = completedPercentage;
+					totalRepsPercentage.Add(totalRepsGraph);
+				}
+				else if (item.Exercise == "Benchpress")
+				{
+					var expectedReps = db.ExpectedProgramTotals.Where(e => e.UserId == id && e.Exercise == "Benchpress").FirstOrDefault();
+					int? completedPercentage = CalculatePercentage(item.Reps, expectedReps.Reps);
+					RepsPercentageViewModel totalRepsGraph = new RepsPercentageViewModel();
+					totalRepsGraph.Exercise = item.Exercise;
+					totalRepsGraph.TotalReps = completedPercentage;
+					totalRepsPercentage.Add(totalRepsGraph);
+				}
+				else if (item.Exercise == "Deadlift")
+				{
+					var expectedReps = db.ExpectedProgramTotals.Where(e => e.UserId == id && e.Exercise == "Deadlift").FirstOrDefault();
+					int? completedPercentage = CalculatePercentage(item.Reps, expectedReps.Reps);
+					RepsPercentageViewModel totalRepsGraph = new RepsPercentageViewModel();
+					totalRepsGraph.Exercise = item.Exercise;
+					totalRepsGraph.TotalReps = completedPercentage;
+					totalRepsPercentage.Add(totalRepsGraph);
+				}
+			}
+			return JsonConvert.SerializeObject(totalRepsPercentage);
+		}
+
+		public string CreateWeightGraph()
+		{
+			List<WeightPercentageViewModel> totalWeightPercentage = new List<WeightPercentageViewModel>();
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var id = currentUser.UserId;
+			var actualWeight = db.ActualProgramTotals.Where(a => a.UserId == currentUser.UserId).ToList();
+			foreach (var item in actualWeight)
+			{
+				if (item.Exercise == "Squat")
+				{
+					var expectedWeight = db.ExpectedProgramTotals.Where(e => e.UserId == id && e.Exercise == "Squat").FirstOrDefault();
+					int? completedPercentage = Convert.ToInt32((item.Weight / expectedWeight.Weight) * 100);
+					WeightPercentageViewModel totalWeightGraph = new WeightPercentageViewModel();
+					totalWeightGraph.Exercise = item.Exercise;
+					totalWeightGraph.TotalWeight = completedPercentage;
+					totalWeightPercentage.Add(totalWeightGraph);
+				}
+				else if (item.Exercise == "Benchpress")
+				{
+					var expectedWeight = db.ExpectedProgramTotals.Where(e => e.UserId == id && e.Exercise == "Benchpress").FirstOrDefault();
+					int? completedPercentage = Convert.ToInt32((item.Weight / expectedWeight.Weight) * 100);
+					WeightPercentageViewModel totalWeightGraph = new WeightPercentageViewModel();
+					totalWeightGraph.Exercise = item.Exercise;
+					totalWeightGraph.TotalWeight = completedPercentage;
+					totalWeightPercentage.Add(totalWeightGraph);
+				}
+				else if (item.Exercise == "Deadlift")
+				{
+					var expectedWeight = db.ExpectedProgramTotals.Where(e => e.UserId == id && e.Exercise == "Deadlift").FirstOrDefault();
+					int? completedPercentage = Convert.ToInt32((item.Weight / expectedWeight.Weight) * 100);
+					WeightPercentageViewModel totalWeightGraph = new WeightPercentageViewModel();
+					totalWeightGraph.Exercise = item.Exercise;
+					totalWeightGraph.TotalWeight = completedPercentage;
+					totalWeightPercentage.Add(totalWeightGraph);
+				}
+			}
+			return JsonConvert.SerializeObject(totalWeightPercentage);
+		}
+
+		public int? CalculatePercentage(int? part, int? whole)
+		{
+			int? answer;
+			double fraction = (double)part / (double)whole;
+			answer = Convert.ToInt32(fraction * 100);
+			return answer;
+		}
+	}
 }

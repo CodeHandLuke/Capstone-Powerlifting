@@ -109,4 +109,16 @@ namespace PowerliftingCapstone.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+	public class RepsPercentageViewModel
+	{
+		public string Exercise { get; set; }
+		public int? TotalReps { get; set; }
+	}
+
+	public class WeightPercentageViewModel
+	{
+		public string Exercise { get; set; }
+		public int? TotalWeight { get; set; }
+	}
 }

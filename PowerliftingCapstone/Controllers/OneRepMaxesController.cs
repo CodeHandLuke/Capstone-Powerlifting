@@ -20,7 +20,7 @@ namespace PowerliftingCapstone.Controllers
         {
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-            var oneRepMaxes = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserProfileId);
+            var oneRepMaxes = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserId);
             return View(oneRepMaxes.ToList());
         }
 
@@ -56,7 +56,7 @@ namespace PowerliftingCapstone.Controllers
         // GET: OneRepMaxes/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName");
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName");
             return View();
         }
 
@@ -77,13 +77,13 @@ namespace PowerliftingCapstone.Controllers
 				var wilksCoefficient = CalcuateWilks(oneRepMax.Total);
 				oneRepMax.Wilks = Math.Round(wilksCoefficient, 2);
 				currentUser.Wilks = oneRepMax.Wilks;
-				oneRepMax.UserId = currentUser.UserProfileId;
+				oneRepMax.UserId = currentUser.UserId;
                 db.OneRepMaxes.Add(oneRepMax);
                 db.SaveChanges();
                 return RedirectToAction("InitializeWorkout", "Lifts");
             }
 
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", oneRepMax.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", oneRepMax.UserId);
             return View(oneRepMax);
         }
 
@@ -133,7 +133,7 @@ namespace PowerliftingCapstone.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", oneRepMax.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", oneRepMax.UserId);
             return View(oneRepMax);
         }
 
@@ -150,7 +150,7 @@ namespace PowerliftingCapstone.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", oneRepMax.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", oneRepMax.UserId);
             return View(oneRepMax);
         }
 

@@ -40,7 +40,7 @@ namespace PowerliftingCapstone.Controllers
         // GET: WeeklyTotals/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName");
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName");
             return View();
         }
 
@@ -55,13 +55,13 @@ namespace PowerliftingCapstone.Controllers
             {
 				var appUserId = User.Identity.GetUserId();
 				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-				weeklyTotal.UserId = currentUser.UserProfileId;
+				weeklyTotal.UserId = currentUser.UserId;
 				db.WeeklyTotals.Add(weeklyTotal);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", weeklyTotal.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", weeklyTotal.UserId);
             return View(weeklyTotal);
         }
 
@@ -77,7 +77,7 @@ namespace PowerliftingCapstone.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", weeklyTotal.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", weeklyTotal.UserId);
             return View(weeklyTotal);
         }
 
@@ -94,7 +94,7 @@ namespace PowerliftingCapstone.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", weeklyTotal.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", weeklyTotal.UserId);
             return View(weeklyTotal);
         }
 

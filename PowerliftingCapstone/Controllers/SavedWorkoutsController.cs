@@ -40,7 +40,7 @@ namespace PowerliftingCapstone.Controllers
         // GET: SavedWorkouts/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName");
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName");
             return View();
         }
 
@@ -55,13 +55,13 @@ namespace PowerliftingCapstone.Controllers
             {
 				var appUserId = User.Identity.GetUserId();
 				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-				savedWorkout.UserId = currentUser.UserProfileId;
+				savedWorkout.UserId = currentUser.UserId;
 				db.SavedWorkouts.Add(savedWorkout);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", savedWorkout.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", savedWorkout.UserId);
             return View(savedWorkout);
         }
 
@@ -77,7 +77,7 @@ namespace PowerliftingCapstone.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", savedWorkout.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", savedWorkout.UserId);
             return View(savedWorkout);
         }
 
@@ -94,7 +94,7 @@ namespace PowerliftingCapstone.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", savedWorkout.UserId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", savedWorkout.UserId);
             return View(savedWorkout);
         }
 

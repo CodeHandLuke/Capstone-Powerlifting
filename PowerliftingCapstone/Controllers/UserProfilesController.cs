@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
@@ -49,7 +50,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserProfileId,FirstName,LastName,Age,Sex,Weight,Wilks,WorkoutOfDay,ApplicationId")] UserProfile userProfile)
+        public ActionResult Create([Bind(Include = "UserId,FirstName,LastName,Age,Sex,Weight,Wilks,WorkoutOfDay,ApplicationId")] UserProfile userProfile)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +87,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserProfileId,FirstName,LastName,Age,Sex,Weight,Wilks,WorkoutOfDay,ApplicationId")] UserProfile userProfile)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Age,Sex,Weight,Wilks,WorkoutOfDay,ApplicationId")] UserProfile userProfile)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +131,7 @@ namespace PowerliftingCapstone.Controllers
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			var liftsCount = db.Lifts.Where(l => l.UserId == currentUser.UserProfileId).Count();
+			var liftsCount = db.Lifts.Where(l => l.UserId == currentUser.UserId).Count();
 			if (liftsCount < 45)
 			{
 				SeedWorkoutTableDayOne();
@@ -160,7 +161,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 50;
 				newLift.Reps = 5;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -181,7 +182,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 50;
 				newLift.Reps = 5;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -202,7 +203,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 70;
 				newLift.Reps = 2;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -231,7 +232,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 50;
 				newLift.Reps = 5;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -252,7 +253,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 50;
 				newLift.Reps = 6;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -273,7 +274,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 70;
 				newLift.Reps = 4;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -302,7 +303,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 80;
 				newLift.Reps = 3;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -323,7 +324,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 80;
 				newLift.Reps = 3;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -344,7 +345,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 75;
 				newLift.Reps = 3;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -372,7 +373,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 60;
 				newLift.Reps = 2;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
@@ -393,7 +394,7 @@ namespace PowerliftingCapstone.Controllers
 				newLift.OneRMPercentage = 75;
 				newLift.Reps = 4;
 				newLift.Completed = false;
-				newLift.UserId = currentUser.UserProfileId;
+				newLift.UserId = currentUser.UserId;
 				db.Lifts.Add(newLift);
 				db.SaveChanges();
 				setOrder++;
