@@ -65,7 +65,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OneRepMaxId,Squat,Bench,Deadlift")] OneRepMax oneRepMax)
+        public ActionResult Create([Bind(Include = "OneRepMaxId,Squat,Bench,Deadlift,UserId")] OneRepMax oneRepMax)
         {
             if (ModelState.IsValid)
             {

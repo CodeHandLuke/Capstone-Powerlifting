@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
 using Microsoft.AspNet.Identity;
 using PowerliftingCapstone.Models;
 
@@ -20,7 +21,16 @@ namespace PowerliftingCapstone.Controllers
         {
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			DetermineLiftWeights();
+			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserProfileId).Count();
+			if (oneRepMaxCount > 0)
+			{
+				DetermineLiftWeights();
+			}
+			else
+			{
+				MessageBox.Show("Please input your one-rep maxes!");
+				return RedirectToAction("Index", "OneRepMaxes");
+			}
 			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay);
 			return View(lifts.ToList());
         }
@@ -51,11 +61,14 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes")] Lift lift)
+        public ActionResult Create([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes,UserId")] Lift lift)
         {
             if (ModelState.IsValid)
             {
-                db.Lifts.Add(lift);
+				var appUserId = User.Identity.GetUserId();
+				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+				lift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(lift);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -83,7 +96,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes")] Lift lift)
+        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes,UserId")] Lift lift)
         {
             if (ModelState.IsValid)
             {
@@ -120,11 +133,13 @@ namespace PowerliftingCapstone.Controllers
             return RedirectToAction("Index");
         }
 
+
 		//This method will be used to calculate the how heavy each lift has to be using the lifter's one rep max
 		public void DetermineLiftWeights() 
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserProfileId).Count();
 			var oneRepMaxList = db.OneRepMaxes.Where(o => o.UserId == currentUser.UserProfileId).ToList();
 			var oneRepMax = oneRepMaxList.LastOrDefault();
 			var squatM = oneRepMax.Squat;
@@ -171,6 +186,26 @@ namespace PowerliftingCapstone.Controllers
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
+		}
+
+		public ActionResult SaveWorkout()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			return View();
+		}
+
+		public ActionResult CompleteAllReps()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay);
+			foreach (var item in lifts)
+			{
+				item.Completed = true;
+			}
+			db.SaveChanges();
+			return RedirectToAction("Index");
 		}
 
         protected override void Dispose(bool disposing)

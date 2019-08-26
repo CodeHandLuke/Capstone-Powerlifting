@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -182,29 +183,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201908221611021_InitialMigration.cs" />
-    <Compile Include="Migrations\201908221611021_InitialMigration.Designer.cs">
-      <DependentUpon>201908221611021_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908221624223_UpdatedTables.cs" />
-    <Compile Include="Migrations\201908221624223_UpdatedTables.Designer.cs">
-      <DependentUpon>201908221624223_UpdatedTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908221854254_WeightChange.cs" />
-    <Compile Include="Migrations\201908221854254_WeightChange.Designer.cs">
-      <DependentUpon>201908221854254_WeightChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908222045028_UpdatedLifts.cs" />
-    <Compile Include="Migrations\201908222045028_UpdatedLifts.Designer.cs">
-      <DependentUpon>201908222045028_UpdatedLifts.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908231928310_UpdatedLiftModel.cs" />
-    <Compile Include="Migrations\201908231928310_UpdatedLiftModel.Designer.cs">
-      <DependentUpon>201908231928310_UpdatedLiftModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908232055378_UpdatedSavedWorkout.cs" />
-    <Compile Include="Migrations\201908232055378_UpdatedSavedWorkout.Designer.cs">
-      <DependentUpon>201908232055378_UpdatedSavedWorkout.cs</DependentUpon>
+    <Compile Include="Migrations\201908261349262_RecreateMigration.cs" />
+    <Compile Include="Migrations\201908261349262_RecreateMigration.Designer.cs">
+      <DependentUpon>201908261349262_RecreateMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -344,23 +325,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201908221611021_InitialMigration.resx">
-      <DependentUpon>201908221611021_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908221624223_UpdatedTables.resx">
-      <DependentUpon>201908221624223_UpdatedTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908221854254_WeightChange.resx">
-      <DependentUpon>201908221854254_WeightChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908222045028_UpdatedLifts.resx">
-      <DependentUpon>201908222045028_UpdatedLifts.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908231928310_UpdatedLiftModel.resx">
-      <DependentUpon>201908231928310_UpdatedLiftModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908232055378_UpdatedSavedWorkout.resx">
-      <DependentUpon>201908232055378_UpdatedSavedWorkout.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908261349262_RecreateMigration.resx">
+      <DependentUpon>201908261349262_RecreateMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

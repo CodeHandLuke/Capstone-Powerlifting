@@ -57,7 +57,8 @@ namespace PowerliftingCapstone.Controllers
 				userProfile.WorkoutOfDay = 1;
                 db.UserProfiles.Add(userProfile);
                 db.SaveChanges();
-                return RedirectToAction("Index"); //Redirect to first workout
+				SeedLiftsTable();
+				return RedirectToAction("Index"); //Redirect to first workout
             }
 
             ViewBag.ApplicationId = new SelectList(db.Users, "Id", "Email", userProfile.ApplicationId);
@@ -123,7 +124,283 @@ namespace PowerliftingCapstone.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+		int setOrder = 1;
+
+		public void SeedLiftsTable()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var liftsCount = db.Lifts.Where(l => l.UserId == currentUser.UserProfileId).Count();
+			if (liftsCount < 45)
+			{
+				SeedWorkoutTableDayOne();
+				SeedWorkoutTableDayTwo();
+				SeedWorkoutTableDayThree();
+				SeedWorkoutTableDayFour();
+			}
+		}
+		public void SeedWorkoutTableDayOne()
+		{
+			SeedWorkoutTableSquat();
+			SeedWorkoutTableBench();
+			SeedWorkoutTableSquatSetTwo();
+			setOrder = 1;
+		}
+		public void SeedWorkoutTableSquat()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var squatSets = 5;
+			for (int i = 0; i < squatSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 1;
+				newLift.Exercise = "Squat";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 5;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableBench()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var benchSets = 5;
+			for (int i = 0; i < benchSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 1;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 5;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableSquatSetTwo()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var squatSets = 5;
+			for (int i = 0; i < squatSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 1;
+				newLift.Exercise = "Squat";
+				newLift.OneRMPercentage = 70;
+				newLift.Reps = 2;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDayTwo()
+		{
+			SeedWorkoutTableDeadlift();
+			SeedWorkoutTableBenchTwo();
+			SeedWorkoutTableDeadliftTwo();
+			setOrder = 1;
+		}
+
+		public void SeedWorkoutTableDeadlift()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var deadSets = 5;
+			for (int i = 0; i < deadSets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 2;
+				newLift.Exercise = "Deadlift";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 5;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableBenchTwo()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 2;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 50;
+				newLift.Reps = 6;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDeadliftTwo()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 4;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 2;
+				newLift.Exercise = "Deadlift^Knee";
+				newLift.OneRMPercentage = 70;
+				newLift.Reps = 4;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDayThree()
+		{
+			SeedWorkoutTableBenchThree();
+			SeedWorkoutTableSquatThree();
+			SeedWorkoutTableBenchThreeTwo();
+			setOrder = 1;
+		}
+
+		public void SeedWorkoutTableBenchThree()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 3;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 80;
+				newLift.Reps = 3;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableSquatThree()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 3;
+				newLift.Exercise = "Squat";
+				newLift.OneRMPercentage = 80;
+				newLift.Reps = 3;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableBenchThreeTwo()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 3;
+				newLift.Exercise = "Benchpress";
+				newLift.OneRMPercentage = 75;
+				newLift.Reps = 3;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableDayFour()
+		{
+			SeedWorkoutTableDeadliftFour();
+			SeedWorkoutTableRackpull();
+			setOrder = 1;
+		}
+
+		public void SeedWorkoutTableDeadliftFour()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 4;
+				newLift.Exercise = "Def Deadlift";
+				newLift.OneRMPercentage = 60;
+				newLift.Reps = 2;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		public void SeedWorkoutTableRackpull()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var sets = 5;
+			for (int i = 0; i < sets; i++)
+			{
+				Lift newLift = new Lift();
+				newLift.SetOrder = setOrder;
+				newLift.WorkoutId = 4;
+				newLift.Exercise = "Rackpull";
+				newLift.OneRMPercentage = 75;
+				newLift.Reps = 4;
+				newLift.Completed = false;
+				newLift.UserId = currentUser.UserProfileId;
+				db.Lifts.Add(newLift);
+				db.SaveChanges();
+				setOrder++;
+			}
+		}
+
+		protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

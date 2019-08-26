@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
@@ -52,7 +53,10 @@ namespace PowerliftingCapstone.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.SavedWorkouts.Add(savedWorkout);
+				var appUserId = User.Identity.GetUserId();
+				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+				savedWorkout.UserId = currentUser.UserProfileId;
+				db.SavedWorkouts.Add(savedWorkout);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

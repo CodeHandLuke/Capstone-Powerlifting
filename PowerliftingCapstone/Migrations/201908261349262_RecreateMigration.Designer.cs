@@ -7,13 +7,13 @@ namespace PowerliftingCapstone.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UpdatedLifts : IMigrationMetadata
+    public sealed partial class RecreateMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdatedLifts));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RecreateMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201908222045028_UpdatedLifts"; }
+            get { return "201908261349262_RecreateMigration"; }
         }
         
         string IMigrationMetadata.Source

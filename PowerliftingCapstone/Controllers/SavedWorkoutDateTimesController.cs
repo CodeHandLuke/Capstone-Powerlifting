@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
@@ -46,11 +47,14 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SavedWorkoutDateId,Date,WorkoutId")] SavedWorkoutDateTime savedWorkoutDateTime)
+        public ActionResult Create([Bind(Include = "SavedWorkoutDateId,Date,WorkoutId,UserId")] SavedWorkoutDateTime savedWorkoutDateTime)
         {
             if (ModelState.IsValid)
             {
-                db.SavedWorkoutDateTimes.Add(savedWorkoutDateTime);
+				var appUserId = User.Identity.GetUserId();
+				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+				savedWorkoutDateTime.UserId = currentUser.UserProfileId;
+				db.SavedWorkoutDateTimes.Add(savedWorkoutDateTime);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -78,7 +82,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SavedWorkoutDateId,Date,WorkoutId")] SavedWorkoutDateTime savedWorkoutDateTime)
+        public ActionResult Edit([Bind(Include = "SavedWorkoutDateId,Date,WorkoutId,UserId")] SavedWorkoutDateTime savedWorkoutDateTime)
         {
             if (ModelState.IsValid)
             {
