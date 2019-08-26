@@ -187,6 +187,14 @@
     <Compile Include="Migrations\201908261349262_RecreateMigration.Designer.cs">
       <DependentUpon>201908261349262_RecreateMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908261526264_UpdatedNullProperty.cs" />
+    <Compile Include="Migrations\201908261526264_UpdatedNullProperty.Designer.cs">
+      <DependentUpon>201908261526264_UpdatedNullProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908261625087_UpdatingProgramTotals.cs" />
+    <Compile Include="Migrations\201908261625087_UpdatingProgramTotals.Designer.cs">
+      <DependentUpon>201908261625087_UpdatingProgramTotals.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActualProgramTotal.cs" />
@@ -327,6 +335,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201908261349262_RecreateMigration.resx">
       <DependentUpon>201908261349262_RecreateMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908261526264_UpdatedNullProperty.resx">
+      <DependentUpon>201908261526264_UpdatedNullProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908261625087_UpdatingProgramTotals.resx">
+      <DependentUpon>201908261625087_UpdatingProgramTotals.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

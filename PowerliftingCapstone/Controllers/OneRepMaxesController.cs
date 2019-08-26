@@ -65,7 +65,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OneRepMaxId,Squat,Bench,Deadlift,UserId")] OneRepMax oneRepMax)
+        public ActionResult Create([Bind(Include = "OneRepMaxId,Squat,Bench,Deadlift")] OneRepMax oneRepMax)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace PowerliftingCapstone.Controllers
 				oneRepMax.UserId = currentUser.UserProfileId;
                 db.OneRepMaxes.Add(oneRepMax);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("InitializeWorkout", "Lifts");
             }
 
             ViewBag.UserId = new SelectList(db.UserProfiles, "UserProfileId", "FirstName", oneRepMax.UserId);
@@ -142,7 +142,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OneRepMaxId,Date,Squat,Bench,Deadlift,Total,Wilks,UserId")] OneRepMax oneRepMax)
+        public ActionResult Edit([Bind(Include = "OneRepMaxId,Date,Squat,Bench,Deadlift,Total,Wilks")] OneRepMax oneRepMax)
         {
             if (ModelState.IsValid)
             {

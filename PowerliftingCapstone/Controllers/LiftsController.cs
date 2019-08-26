@@ -22,18 +22,23 @@ namespace PowerliftingCapstone.Controllers
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
 			var oneRepMaxCount = db.OneRepMaxes.Where(m => m.UserId == currentUser.UserProfileId).Count();
-			if (oneRepMaxCount > 0)
+			if (oneRepMaxCount < 1)
 			{
-				DetermineLiftWeights();
-			}
-			else
-			{
-				MessageBox.Show("Please input your one-rep maxes!");
+				MessageBox.Show("Please input your one-rep maxes to initialize your workout!");
 				return RedirectToAction("Index", "OneRepMaxes");
 			}
 			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay);
 			return View(lifts.ToList());
         }
+
+		public ActionResult InitializeWorkout()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			DetermineLiftWeights();
+			DetermineExpectedProgramTotals(currentUser.UserProfileId);
+			return RedirectToAction("Index");
+		}
 
 		// GET: Lifts/Details/5
 		public ActionResult Details(int? id)
@@ -96,7 +101,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes,UserId")] Lift lift)
+        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes")] Lift lift)
         {
             if (ModelState.IsValid)
             {
@@ -173,39 +178,215 @@ namespace PowerliftingCapstone.Controllers
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			if (currentUser.WorkoutOfDay < 4)
+			var completedSetCount = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay && o.Completed == true).Count();
+			if (completedSetCount > 1)
 			{
-				currentUser.WorkoutOfDay++;
-				db.SaveChanges();
-				return RedirectToAction("Index");
-			}
+				if (currentUser.WorkoutOfDay < 4)
+				{
+					SaveWorkout(currentUser.UserProfileId, currentUser.WorkoutOfDay);
+					SaveProgramTotals(currentUser.UserProfileId, currentUser.WorkoutOfDay);
+					currentUser.WorkoutOfDay++;
+					db.SaveChanges();
+					return RedirectToAction("Index");
+				}
 
-			else
+				else
+				{
+					SaveWorkout(currentUser.UserProfileId, currentUser.WorkoutOfDay);
+					SaveProgramTotals(currentUser.UserProfileId, currentUser.WorkoutOfDay);
+					currentUser.WorkoutOfDay = 1;
+					db.SaveChanges();
+					return RedirectToAction("Index");
+				}
+			}
+			else if (completedSetCount < 1)
 			{
-				currentUser.WorkoutOfDay = 1;
-				db.SaveChanges();
+				MessageBox.Show("Please remember to check the 'Complete' box when you finish your set!");
 				return RedirectToAction("Index");
 			}
+			return RedirectToAction("Index");
 		}
 
-		public ActionResult SaveWorkout()
+		public void SaveProgramTotals(int userId, int? WorkoutSerial)
 		{
-			var appUserId = User.Identity.GetUserId();
-			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			return View();
+			var foundLifts = db.Lifts.Where(l => l.UserId == userId && l.WorkoutId == WorkoutSerial && l.Completed == true).ToList();
+			foreach (var item in foundLifts)
+			{
+				if (item.Exercise == "Squat")
+				{
+					var squatTotalsCount = db.ActualProgramTotals.Where(s => s.Exercise == "Squat" && s.UserId == userId).Count();
+					if (squatTotalsCount < 1)
+					{
+						ActualProgramTotal programTotals = new ActualProgramTotal();
+						programTotals.Exercise = "Squat";
+						programTotals.Reps = 0;
+						programTotals.Weight = 0;
+						programTotals.UserId = userId;
+						db.ActualProgramTotals.Add(programTotals);
+						db.SaveChanges();
+					}
+					else
+					{
+						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Squat").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight;
+						db.SaveChanges();
+					}
+				}
+				else if (item.Exercise == "Benchpress")
+				{
+					var benchTotalsCount = db.ActualProgramTotals.Where(s => s.Exercise == "Benchpress" && s.UserId == userId).Count();
+					if (benchTotalsCount < 1)
+					{
+						ActualProgramTotal programTotals = new ActualProgramTotal();
+						programTotals.Exercise = "Benchpress";
+						programTotals.Reps = 0;
+						programTotals.Weight = 0;
+						programTotals.UserId = userId;
+						db.ActualProgramTotals.Add(programTotals);
+						db.SaveChanges();
+					}
+					else
+					{
+						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Benchpress").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight;
+						db.SaveChanges();
+					}
+				}
+				else if (item.Exercise == "Deadlift")
+				{
+					var deadTotalsCount = db.ActualProgramTotals.Where(s => s.Exercise == "Deadlift" && s.UserId == userId).Count();
+					if (deadTotalsCount < 1)
+					{
+						ActualProgramTotal programTotals = new ActualProgramTotal();
+						programTotals.Exercise = "Deadlift";
+						programTotals.Reps = 0;
+						programTotals.Weight = 0;
+						programTotals.UserId = userId;
+						db.ActualProgramTotals.Add(programTotals);
+						db.SaveChanges();
+					}
+					else
+					{
+						var foundProgramTotals = db.ActualProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Deadlift").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight;
+						db.SaveChanges();
+					}
+				}
+			}
+			db.SaveChanges();
+		}
+
+		public void SaveWorkout(int userId, int? WorkoutSerial)
+		{
+			var foundLifts = db.Lifts.Where(l => l.UserId == userId && l.WorkoutId == WorkoutSerial).ToList();
+			foreach (var item in foundLifts)
+			{
+				SavedWorkout newSavedWorkout = new SavedWorkout();
+				newSavedWorkout.Date = DateTime.Now;
+				newSavedWorkout.Exercise = item.Exercise;
+				newSavedWorkout.OneRMPercentage = item.OneRMPercentage;
+				newSavedWorkout.Reps = item.Reps;
+				newSavedWorkout.Weight = item.Weight;
+				newSavedWorkout.WorkoutId = item.WorkoutId;
+				newSavedWorkout.Notes = item.Notes;
+				newSavedWorkout.UserId = userId;
+				db.SavedWorkouts.Add(newSavedWorkout);
+				SavedWorkoutDateTime newSavedWorkoutDate = new SavedWorkoutDateTime();
+				newSavedWorkoutDate.Date = newSavedWorkout.Date;
+				newSavedWorkoutDate.WorkoutId = newSavedWorkout.WorkoutId;
+				newSavedWorkoutDate.UserId = newSavedWorkout.UserId;
+				db.SavedWorkoutDateTimes.Add(newSavedWorkoutDate);
+			}
+			db.SaveChanges();
 		}
 
 		public ActionResult CompleteAllReps()
 		{
 			var appUserId = User.Identity.GetUserId();
 			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay);
+			var lifts = db.Lifts.Where(o => o.WorkoutId == currentUser.WorkoutOfDay).ToList();
 			foreach (var item in lifts)
 			{
 				item.Completed = true;
 			}
 			db.SaveChanges();
 			return RedirectToAction("Index");
+		}
+
+		public void DetermineExpectedProgramTotals(int userId)
+		{
+			var allLifts = db.Lifts.Where(l => l.UserId == userId).ToList();
+			ExpectedProgramTotal expectedProgramTotal = new ExpectedProgramTotal();
+			foreach (var item in allLifts)
+			{
+				if (item.Exercise == "Squat")
+				{
+					var squatTotalsCount = db.ExpectedProgramTotals.Where(s => s.Exercise == "Squat" && s.UserId == userId).Count();
+					if (squatTotalsCount < 1)
+					{
+						ExpectedProgramTotal programTotals = new ExpectedProgramTotal();
+						programTotals.Exercise = "Squat";
+						programTotals.Reps = 0;
+						programTotals.Weight = 0;
+						programTotals.UserId = userId;
+						db.ExpectedProgramTotals.Add(programTotals);
+						db.SaveChanges();
+					}
+					else
+					{
+						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Squat").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight;
+						db.SaveChanges();
+					}
+				}
+				else if (item.Exercise == "Benchpress")
+				{
+					var benchTotalsCount = db.ExpectedProgramTotals.Where(s => s.Exercise == "Benchpress" && s.UserId == userId).Count();
+					if (benchTotalsCount < 1)
+					{
+						ExpectedProgramTotal programTotals = new ExpectedProgramTotal();
+						programTotals.Exercise = "Benchpress";
+						programTotals.Reps = 0;
+						programTotals.Weight = 0;
+						programTotals.UserId = userId;
+						db.ExpectedProgramTotals.Add(programTotals);
+						db.SaveChanges();
+					}
+					else
+					{
+						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Benchpress").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight;
+						db.SaveChanges();
+					}
+				}
+				else if (item.Exercise == "Deadlift")
+				{
+					var deadTotalsCount = db.ExpectedProgramTotals.Where(s => s.Exercise == "Deadlift" && s.UserId == userId).Count();
+					if (deadTotalsCount < 1)
+					{
+						ExpectedProgramTotal programTotals = new ExpectedProgramTotal();
+						programTotals.Exercise = "Deadlift";
+						programTotals.Reps = 0;
+						programTotals.Weight = 0;
+						programTotals.UserId = userId;
+						db.ExpectedProgramTotals.Add(programTotals);
+						db.SaveChanges();
+					}
+					else
+					{
+						var foundProgramTotals = db.ExpectedProgramTotals.Where(f => f.UserId == userId && f.Exercise == "Deadlift").FirstOrDefault();
+						foundProgramTotals.Reps += item.Reps;
+						foundProgramTotals.Weight += item.Weight;
+						db.SaveChanges();
+					}
+				}
+			}
+			db.SaveChanges();
 		}
 
         protected override void Dispose(bool disposing)
