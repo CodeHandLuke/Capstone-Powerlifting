@@ -309,6 +309,7 @@
     <Content Include="Views\Lifts\DailyWorkout.cshtml" />
     <Content Include="Views\UserProfiles\RepsBarGraph.cshtml" />
     <Content Include="Views\Lifts\RepsBarGraph.cshtml" />
+    <Content Include="Views\Lifts\WeightBarGraph.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

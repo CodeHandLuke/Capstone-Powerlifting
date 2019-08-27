@@ -4,7 +4,7 @@
 	ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>My Workout</h2>
 
 <table class="table">
 	<tr>
@@ -70,6 +70,7 @@
 <input type="button" value="Start Rest Timer" onclick="startTimer()" />
 <div id="counter"></div>
 <div>@Html.ActionLink("Graphs", "RepsBarGraph")</div>
+<div>@Html.ActionLink("Graphs", "WeightBarGraph")</div>
 <script>
 	function startTimer() {
 		var defaultTimer = 90, // Default amount of seconds if url variable is not found

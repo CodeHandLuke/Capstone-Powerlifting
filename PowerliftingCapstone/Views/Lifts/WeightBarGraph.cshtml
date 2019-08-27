@@ -1,8 +1,8 @@
 ﻿@{
-	ViewData["Title"] = "RepsBarGraph";
+	ViewData["Title"] = "WeightBarGraph";
 }
 
-<h1>Percentage of Completed Reps</h1>
+<h1>Percentage of Expected Weight Lifted</h1>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -15,7 +15,7 @@
 
 		$.ajax({
 			type: "GET",
-			url: "CreateRepsGraph",
+			url: "CreateWeightGraph",
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function (result) {
@@ -31,7 +31,7 @@
 				console.log(data);
 
 				x.domain(data.map(d => d.Exercise));
-				y.domain([0, d3.max(data, d => d.TotalReps)]);
+				y.domain([0, d3.max(data, d => d.TotalWeight)]);
 
 				g.append("g")
 					.attr("class", "axis axis-x")
@@ -47,9 +47,9 @@
 					.enter().append("rect")
 					.attr("class", "bar")
 					.attr("x", d => x(d.Exercise))
-					.attr("y", d => y(d.TotalReps))
+					.attr("y", d => y(d.TotalWeight))
 					.attr("width", x.bandwidth())
-					.attr("height", d => height - y(d.TotalReps));
+					.attr("height", d => height - y(d.TotalWeight));
 				//.attr("fill", (d,i) => rainbow(i));
 			},
 			error: function (msg) {
