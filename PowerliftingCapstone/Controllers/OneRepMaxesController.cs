@@ -72,7 +72,9 @@ namespace PowerliftingCapstone.Controllers
             {
 				var appUserId = User.Identity.GetUserId();
 				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-
+				RemovedPreviousActualTotals();
+				RemovePreviousExpectedTotals();
+				RemovePreviousLifts();
 				oneRepMax.Date = DateTime.Now;
 				oneRepMax.Total = oneRepMax.Squat + oneRepMax.Bench + oneRepMax.Deadlift;
 				var wilksCoefficient = CalcuateWilks(oneRepMax.Total);
@@ -87,6 +89,55 @@ namespace PowerliftingCapstone.Controllers
             ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", oneRepMax.UserId);
             return View(oneRepMax);
         }
+
+		public void RemovePreviousExpectedTotals()
+		{
+			var id = ReturnCurrentUserId();
+			var foundExpectedLiftTotals = db.ExpectedProgramTotals.Where(f => f.UserId == id).ToList();
+			if (foundExpectedLiftTotals != null)
+			{
+				foreach (var item in foundExpectedLiftTotals)
+				{
+					db.ExpectedProgramTotals.Remove(item);
+				}
+				db.SaveChanges();
+			}
+
+		}
+
+		public void RemovedPreviousActualTotals()
+		{
+			var id = ReturnCurrentUserId();
+			var foundActualLiftTotals = db.ActualProgramTotals.Where(f => f.UserId == id).ToList();
+			foreach (var item in foundActualLiftTotals)
+			{
+				db.ActualProgramTotals.Remove(item);
+			}
+			db.SaveChanges();
+		}
+
+		public void RemovePreviousLifts()
+		{
+			var id = ReturnCurrentUserId();
+			var foundLifts = db.Lifts.Where(l => l.UserId == id).ToList();
+			var liftCount = foundLifts.Count();
+			if (liftCount > 0)
+			{
+				foreach (var item in foundLifts)
+				{
+					db.Lifts.Remove(item);
+				}
+				db.SaveChanges();
+			}
+		}
+
+		public int ReturnCurrentUserId()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var id = currentUser.UserId;
+			return id;
+		}
 
 		public double CalcuateWilks(double total)
 		{

@@ -127,6 +127,21 @@ namespace PowerliftingCapstone.Controllers
 
 		int setOrder = 1;
 
+		public ActionResult SeedLiftsTableAction()
+		{
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var liftsCount = db.Lifts.Where(l => l.UserId == currentUser.UserId).Count();
+			if (liftsCount < 45)
+			{
+				SeedWorkoutTableDayOne();
+				SeedWorkoutTableDayTwo();
+				SeedWorkoutTableDayThree();
+				SeedWorkoutTableDayFour();
+			}
+			return RedirectToAction("Index", "Lifts");
+		}
+
 		public void SeedLiftsTable()
 		{
 			var appUserId = User.Identity.GetUserId();
