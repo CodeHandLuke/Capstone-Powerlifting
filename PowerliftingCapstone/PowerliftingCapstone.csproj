@@ -310,6 +310,7 @@
     <Content Include="Views\UserProfiles\RepsBarGraph.cshtml" />
     <Content Include="Views\Lifts\RepsBarGraph.cshtml" />
     <Content Include="Views\Lifts\WeightBarGraph.cshtml" />
+    <Content Include="Views\OneRepMaxes\OneRepMaxProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

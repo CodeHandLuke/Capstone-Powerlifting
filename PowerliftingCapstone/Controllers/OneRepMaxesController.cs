@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
@@ -196,5 +197,101 @@ namespace PowerliftingCapstone.Controllers
             }
             base.Dispose(disposing);
         }
-    }
+
+		//*** D3 line graph showing 1RM progress by month
+
+		public ActionResult OneRepMaxProgress()
+		{
+			return View();
+		}
+
+		public string CreateLineGraph()
+		{
+			List<ExerciseObjectViewModel> exerciseObjectViewModels = new List<ExerciseObjectViewModel>();
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var squatMax = CreateSquatObject();
+			var benchMax = CreateBenchObject();
+			var deadliftMax = CreateDeadliftObject();
+			exerciseObjectViewModels.Add(squatMax);
+			exerciseObjectViewModels.Add(benchMax);
+			exerciseObjectViewModels.Add(deadliftMax);
+			return JsonConvert.SerializeObject(exerciseObjectViewModels);
+		}
+
+		public ExerciseObjectViewModel CreateSquatObject()
+		{
+			ExerciseObjectViewModel squatMax = new ExerciseObjectViewModel();
+			squatMax.Name = "Squat";
+			squatMax.OneRepMaxValues = CreateOneRepMaxSquatValues();
+			return squatMax;
+		}
+
+		public ExerciseObjectViewModel CreateBenchObject()
+		{
+			ExerciseObjectViewModel benchMax = new ExerciseObjectViewModel();
+			benchMax.Name = "Bench";
+			benchMax.OneRepMaxValues = CreateOneRepMaxBenchValues();
+			return benchMax;
+		}
+
+		public ExerciseObjectViewModel CreateDeadliftObject()
+		{
+			ExerciseObjectViewModel deadliftMax = new ExerciseObjectViewModel();
+			deadliftMax.Name = "Deadlift";
+			deadliftMax.OneRepMaxValues = CreateOneRepMaxDeadliftValues();
+			return deadliftMax;
+		}
+
+		public List<OneRepMaxValueViewModel> CreateOneRepMaxSquatValues()
+		{
+			List<OneRepMaxValueViewModel> listOneRepMaxes = new List<OneRepMaxValueViewModel>();
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var id = currentUser.UserId;
+			var squatMaxes = db.OneRepMaxes.Where(s => s.UserId == id);
+			foreach (var item in squatMaxes)
+			{
+				OneRepMaxValueViewModel oneRepMaxSquat = new OneRepMaxValueViewModel();
+				oneRepMaxSquat.Date = item.Date.ToString("MMyyyy");
+				oneRepMaxSquat.Weight = item.Squat;
+				listOneRepMaxes.Add(oneRepMaxSquat);
+			}
+			return listOneRepMaxes;
+		}
+
+		public List<OneRepMaxValueViewModel> CreateOneRepMaxBenchValues()
+		{
+			List<OneRepMaxValueViewModel> listOneRepMaxes = new List<OneRepMaxValueViewModel>();
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var id = currentUser.UserId;
+			var benchMaxes = db.OneRepMaxes.Where(s => s.UserId == id);
+			foreach (var item in benchMaxes)
+			{
+				OneRepMaxValueViewModel oneRepMaxBench = new OneRepMaxValueViewModel();
+				oneRepMaxBench.Date = item.Date.ToString("MMyyyy");
+				oneRepMaxBench.Weight = item.Bench;
+				listOneRepMaxes.Add(oneRepMaxBench);
+			}
+			return listOneRepMaxes;
+		}
+
+		public List<OneRepMaxValueViewModel> CreateOneRepMaxDeadliftValues()
+		{
+			List<OneRepMaxValueViewModel> listOneRepMaxes = new List<OneRepMaxValueViewModel>();
+			var appUserId = User.Identity.GetUserId();
+			var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
+			var id = currentUser.UserId;
+			var deadliftMaxes = db.OneRepMaxes.Where(s => s.UserId == id);
+			foreach (var item in deadliftMaxes)
+			{
+				OneRepMaxValueViewModel oneRepMaxDeadlift = new OneRepMaxValueViewModel();
+				oneRepMaxDeadlift.Date = item.Date.ToString("MMyyyy");
+				oneRepMaxDeadlift.Weight = item.Deadlift;
+				listOneRepMaxes.Add(oneRepMaxDeadlift);
+			}
+			return listOneRepMaxes;
+		}
+	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PowerliftingCapstone.Models
@@ -120,5 +121,17 @@ namespace PowerliftingCapstone.Models
 	{
 		public string Exercise { get; set; }
 		public int? TotalWeight { get; set; }
+	}
+
+	public class OneRepMaxValueViewModel
+	{
+		public string Date { get; set; }
+		public double Weight { get; set; }
+	}
+
+	public class ExerciseObjectViewModel
+	{
+		public string Name { get; set; }
+		public List<OneRepMaxValueViewModel> OneRepMaxValues { get; set; }
 	}
 }
