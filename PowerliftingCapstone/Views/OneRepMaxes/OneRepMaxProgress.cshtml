@@ -36,15 +36,14 @@
 				var data = result;
 
 				/* Format Data */
-				//var parseDate = d3.timeParse("%d-%b-%y");
-				//data.forEach(function(d) { 
-				//  d.OneRepMaxValues.forEach(function(d) {
-				//	  d.Date = parseDate(d.Date);
-				//	  d.Weight = +d.Weight;    
-				//  });
-				//});
+				var parseDate = d3.timeParse("%m/%d/%Y");
+				data.forEach(function(d) { 
+				  d.OneRepMaxValues.forEach(function(d) {
+					  d.Date = parseDate(d.Date);
+					  //d.Weight = +d.Weight;    
+				  });
+				});
 
-				console.log(data);
 				/* Scale */
 				var xScale = d3.scaleTime()
 					.domain(d3.extent(data[0].OneRepMaxValues, d => d.Date))
@@ -159,8 +158,8 @@
 
 
 				/* Add Axis into SVG */
-				var xAxis = d3.axisBottom(xScale).ticks(8);
-				var yAxis = d3.axisLeft(yScale).ticks(8);
+				var xAxis = d3.axisBottom(xScale).ticks(5);
+				var yAxis = d3.axisLeft(yScale).ticks(5);
 
 				svg.append("g")
 					.attr("class", "x axis")

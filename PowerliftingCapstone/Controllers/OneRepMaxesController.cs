@@ -194,7 +194,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OneRepMaxId,Date,Squat,Bench,Deadlift,Total,Wilks")] OneRepMax oneRepMax)
+        public ActionResult Edit([Bind(Include = "OneRepMaxId,Date,Squat,Bench,Deadlift,Total,Wilks,UserId")] OneRepMax oneRepMax)
         {
             if (ModelState.IsValid)
             {
@@ -304,7 +304,7 @@ namespace PowerliftingCapstone.Controllers
 			foreach (var item in squatMaxes)
 			{
 				OneRepMaxValueViewModel oneRepMaxSquat = new OneRepMaxValueViewModel();
-				oneRepMaxSquat.Date = item.Date.ToString("MMyyyy");
+				oneRepMaxSquat.Date = item.Date.ToShortDateString();
 				oneRepMaxSquat.Weight = item.Squat;
 				listOneRepMaxes.Add(oneRepMaxSquat);
 			}
@@ -321,7 +321,7 @@ namespace PowerliftingCapstone.Controllers
 			foreach (var item in benchMaxes)
 			{
 				OneRepMaxValueViewModel oneRepMaxBench = new OneRepMaxValueViewModel();
-				oneRepMaxBench.Date = item.Date.ToString("MMyyyy");
+				oneRepMaxBench.Date = item.Date.ToShortDateString();
 				oneRepMaxBench.Weight = item.Bench;
 				listOneRepMaxes.Add(oneRepMaxBench);
 			}
@@ -338,7 +338,7 @@ namespace PowerliftingCapstone.Controllers
 			foreach (var item in deadliftMaxes)
 			{
 				OneRepMaxValueViewModel oneRepMaxDeadlift = new OneRepMaxValueViewModel();
-				oneRepMaxDeadlift.Date = item.Date.ToString("MMyyyy");
+				oneRepMaxDeadlift.Date = item.Date.ToShortDateString();
 				oneRepMaxDeadlift.Weight = item.Deadlift;
 				listOneRepMaxes.Add(oneRepMaxDeadlift);
 			}
