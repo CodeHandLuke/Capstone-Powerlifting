@@ -304,7 +304,7 @@ namespace PowerliftingCapstone.Controllers
 			foreach (var item in squatMaxes)
 			{
 				OneRepMaxValueViewModel oneRepMaxSquat = new OneRepMaxValueViewModel();
-				oneRepMaxSquat.Date = item.Date.ToShortDateString();
+				oneRepMaxSquat.Date = item.Date.ToString("MM/yyyy");
 				oneRepMaxSquat.Weight = item.Squat;
 				listOneRepMaxes.Add(oneRepMaxSquat);
 			}
@@ -321,7 +321,7 @@ namespace PowerliftingCapstone.Controllers
 			foreach (var item in benchMaxes)
 			{
 				OneRepMaxValueViewModel oneRepMaxBench = new OneRepMaxValueViewModel();
-				oneRepMaxBench.Date = item.Date.ToShortDateString();
+				oneRepMaxBench.Date = item.Date.ToString("MM/yyyy");
 				oneRepMaxBench.Weight = item.Bench;
 				listOneRepMaxes.Add(oneRepMaxBench);
 			}
@@ -338,7 +338,7 @@ namespace PowerliftingCapstone.Controllers
 			foreach (var item in deadliftMaxes)
 			{
 				OneRepMaxValueViewModel oneRepMaxDeadlift = new OneRepMaxValueViewModel();
-				oneRepMaxDeadlift.Date = item.Date.ToShortDateString();
+				oneRepMaxDeadlift.Date = item.Date.ToString("MM/yyyy");
 				oneRepMaxDeadlift.Weight = item.Deadlift;
 				listOneRepMaxes.Add(oneRepMaxDeadlift);
 			}

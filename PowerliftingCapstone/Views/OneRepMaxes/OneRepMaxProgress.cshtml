@@ -2,6 +2,8 @@
 	ViewData["Title"] = "OneRepMaxProgress";
 }
 
+	<h1>One-rep max progression line chart</h1>
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 @*<link rel="stylesheet" href="~/css/styles.css">*@
@@ -18,8 +20,8 @@
 			dataType: "json",
 			success: function (result) {
 				console.log(result);
-				var width = 700;
-				var height = 400;
+				var width = 800;
+				var height = 500;
 				var margin = 100;
 				var duration = 250;
 
@@ -36,11 +38,10 @@
 				var data = result;
 
 				/* Format Data */
-				var parseDate = d3.timeParse("%m/%d/%Y");
+				var parseDate = d3.timeParse("%m/%Y");
 				data.forEach(function(d) { 
 				  d.OneRepMaxValues.forEach(function(d) {
 					  d.Date = parseDate(d.Date);
-					  //d.Weight = +d.Weight;    
 				  });
 				});
 
@@ -172,8 +173,8 @@
 					.append('text')
 					.attr("y", 15)
 					.attr("transform", "rotate(-90)")
-					.attr("fill", "#000")
-					.text("Total weight");
+					.attr("fill", "#000");
+					//.text("Total weight");
 			},
 			error: function (msg) {
 				$("#result").text(msg);
@@ -181,3 +182,5 @@
 		})
 	})();
 </script>
+
+<p style="text-align:left;">This line chart represents a monthly progression of your one-rep maxes for squat, bench and deadlift. Hover over the different lines to see which lift it represents. Hovering over the point will show you the exact weight lifted that month.</p>
