@@ -1,0 +1,39 @@
+﻿@model PowerliftingCapstone.Models.Thread
+
+@{
+	ViewBag.Title = "Details";
+}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+
+<div class="card">
+	<h1 class="text-center">@Model.ThreadTitle</h1>
+</div>
+
+
+
+@foreach (var item in Model.ThreadPosts)
+{
+	<div class="card border-secondary" style="width: 100%; margin: auto; margin-top: 10px;">
+		<div class="card-body" style="padding: 5px;">
+			<p class="card-text text-muted">@Html.DisplayFor(modelItem => item.DateTime) - @Html.ViewBag.UserName</p>
+			<p class="card-text shadow" style="padding: 3px; border-radius: 5px; margin-bottom: 5px;">@Html.DisplayFor(modelItem => item.PostText)</p>
+		</div>
+	</div>
+}
+
+@using (Html.BeginForm("Post", "Threads", FormMethod.Post))
+{
+	@Html.HiddenFor(model => model.ThreadId);
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6" style="background-color:gray">
+				<h5>Submit your post here</h5>
+				@Html.TextArea("postText")
+				<br />
+			</div>
+			<div></div>
+		</div>
+	</div>
+	<input type="submit" value="Post">
+}

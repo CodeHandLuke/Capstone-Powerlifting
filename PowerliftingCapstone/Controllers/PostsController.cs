@@ -6,120 +6,120 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using PowerliftingCapstone.Models;
 
 namespace PowerliftingCapstone.Controllers
 {
-    public class SavedWorkoutsController : Controller
+    public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: SavedWorkouts
+        // GET: Posts
         public ActionResult Index()
         {
-            var savedWorkouts = db.SavedWorkouts.Include(s => s.User);
-            return View(savedWorkouts.ToList());
+            var posts = db.Posts.Include(p => p.Thread).Include(p => p.User);
+            return View(posts.ToList());
         }
 
-        // GET: SavedWorkouts/Details/5
+        // GET: Posts/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SavedWorkout savedWorkout = db.SavedWorkouts.Find(id);
-            if (savedWorkout == null)
+            Post post = db.Posts.Find(id);
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(savedWorkout);
+            return View(post);
         }
 
-        // GET: SavedWorkouts/Create
+        // GET: Posts/Create
         public ActionResult Create()
         {
+            ViewBag.ThreadId = new SelectList(db.Threads, "ThreadId", "PostedBy");
             ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName");
             return View();
         }
 
-        // POST: SavedWorkouts/Create
+        // POST: Posts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SavedWorkoutId,Date,Exercise,OneRMPercentage,Reps,Weight,WorkoutId,NoteText,UserId")] SavedWorkout savedWorkout)
+        public ActionResult Create([Bind(Include = "PostId,DateTime,PostText,ThreadId,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
-				var appUserId = User.Identity.GetUserId();
-				var currentUser = db.UserProfiles.Where(u => u.ApplicationId == appUserId).FirstOrDefault();
-				savedWorkout.UserId = currentUser.UserId;
-				db.SavedWorkouts.Add(savedWorkout);
+                db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", savedWorkout.UserId);
-            return View(savedWorkout);
+            ViewBag.ThreadId = new SelectList(db.Threads, "ThreadId", "PostedBy", post.ThreadId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", post.UserId);
+            return View(post);
         }
 
-        // GET: SavedWorkouts/Edit/5
+        // GET: Posts/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SavedWorkout savedWorkout = db.SavedWorkouts.Find(id);
-            if (savedWorkout == null)
+            Post post = db.Posts.Find(id);
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", savedWorkout.UserId);
-            return View(savedWorkout);
+            ViewBag.ThreadId = new SelectList(db.Threads, "ThreadId", "PostedBy", post.ThreadId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", post.UserId);
+            return View(post);
         }
 
-        // POST: SavedWorkouts/Edit/5
+        // POST: Posts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SavedWorkoutId,Date,Exercise,OneRMPercentage,Reps,Weight,WorkoutId,NoteText,UserId")] SavedWorkout savedWorkout)
+        public ActionResult Edit([Bind(Include = "PostId,DateTime,PostText,ThreadId,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(savedWorkout).State = EntityState.Modified;
+                db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", savedWorkout.UserId);
-            return View(savedWorkout);
+            ViewBag.ThreadId = new SelectList(db.Threads, "ThreadId", "PostedBy", post.ThreadId);
+            ViewBag.UserId = new SelectList(db.UserProfiles, "UserId", "FirstName", post.UserId);
+            return View(post);
         }
 
-        // GET: SavedWorkouts/Delete/5
+        // GET: Posts/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SavedWorkout savedWorkout = db.SavedWorkouts.Find(id);
-            if (savedWorkout == null)
+            Post post = db.Posts.Find(id);
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(savedWorkout);
+            return View(post);
         }
 
-        // POST: SavedWorkouts/Delete/5
+        // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SavedWorkout savedWorkout = db.SavedWorkouts.Find(id);
-            db.SavedWorkouts.Remove(savedWorkout);
+            Post post = db.Posts.Find(id);
+            db.Posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -123,7 +123,8 @@ namespace PowerliftingCapstone.Migrations
                         Reps = c.Int(),
                         Weight = c.Double(),
                         Completed = c.Boolean(nullable: false),
-                        Notes = c.String(),
+                        Notes = c.Boolean(nullable: false),
+                        NoteText = c.String(),
                         UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ProgramId)
@@ -146,6 +147,35 @@ namespace PowerliftingCapstone.Migrations
                 .PrimaryKey(t => t.OneRepMaxId)
                 .ForeignKey("dbo.UserProfiles", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.Posts",
+                c => new
+                    {
+                        PostId = c.Int(nullable: false, identity: true),
+                        DateTime = c.DateTime(nullable: false),
+                        PostText = c.String(),
+                        ThreadId = c.Int(nullable: false),
+                        UserId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.PostId)
+                .ForeignKey("dbo.Threads", t => t.ThreadId, cascadeDelete: true)
+                .ForeignKey("dbo.UserProfiles", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.ThreadId)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.Threads",
+                c => new
+                    {
+                        ThreadId = c.Int(nullable: false, identity: true),
+                        DateTime = c.DateTime(nullable: false),
+                        PostedBy = c.String(),
+                        ThreadTitle = c.String(),
+                        Posts = c.Int(nullable: false),
+                        LastPost = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.ThreadId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -181,7 +211,7 @@ namespace PowerliftingCapstone.Migrations
                         Reps = c.Int(),
                         Weight = c.Double(),
                         WorkoutId = c.Int(nullable: false),
-                        Notes = c.String(),
+                        NoteText = c.String(),
                         UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.SavedWorkoutId)
@@ -221,6 +251,8 @@ namespace PowerliftingCapstone.Migrations
             DropForeignKey("dbo.SavedWorkouts", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.SavedWorkoutDateTimes", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Posts", "UserId", "dbo.UserProfiles");
+            DropForeignKey("dbo.Posts", "ThreadId", "dbo.Threads");
             DropForeignKey("dbo.OneRepMaxes", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.Lifts", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.ExpectedProgramTotals", "UserId", "dbo.UserProfiles");
@@ -233,6 +265,8 @@ namespace PowerliftingCapstone.Migrations
             DropIndex("dbo.SavedWorkouts", new[] { "UserId" });
             DropIndex("dbo.SavedWorkoutDateTimes", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Posts", new[] { "UserId" });
+            DropIndex("dbo.Posts", new[] { "ThreadId" });
             DropIndex("dbo.OneRepMaxes", new[] { "UserId" });
             DropIndex("dbo.Lifts", new[] { "UserId" });
             DropIndex("dbo.ExpectedProgramTotals", new[] { "UserId" });
@@ -248,6 +282,8 @@ namespace PowerliftingCapstone.Migrations
             DropTable("dbo.SavedWorkouts");
             DropTable("dbo.SavedWorkoutDateTimes");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Threads");
+            DropTable("dbo.Posts");
             DropTable("dbo.OneRepMaxes");
             DropTable("dbo.Lifts");
             DropTable("dbo.ExpectedProgramTotals");

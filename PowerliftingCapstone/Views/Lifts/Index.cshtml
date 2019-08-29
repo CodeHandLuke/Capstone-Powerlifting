@@ -12,8 +12,8 @@
 			@Html.DisplayNameFor(model => model.SetOrder)
 		</th>
 		@*<th>
-				@Html.DisplayNameFor(model => model.WorkoutId)
-			</th>*@
+			@Html.DisplayNameFor(model => model.WorkoutId)
+		</th>*@
 		<th>
 			@Html.DisplayNameFor(model => model.Exercise)
 		</th>
@@ -28,6 +28,9 @@
 		</th>
 		<th>
 			@Html.DisplayNameFor(model => model.Completed)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Notes)
 		</th>
 		<th></th>
 	</tr>
@@ -55,6 +58,9 @@
 			</td>
 			<td>
 				@Html.DisplayFor(modelItem => item.Completed)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Notes)
 			</td>
 			<td>
 				@Html.ActionLink("Edit", "Edit", new { id = item.ProgramId })

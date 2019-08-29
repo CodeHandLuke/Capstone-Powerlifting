@@ -69,4 +69,6 @@
 
 </table>
 
-<div>@Html.ActionLink("Line Chart", "OneRepMaxProgress")</div>
+@*<div>@Html.ActionLink("Line Chart", "OneRepMaxProgress")</div>*@
+<div><input type="button" value="Line Chart" onclick="location.href='@Url.Action("OneRepMaxProgress")'" /></div>
+<div><input type="button" value="Leaderboard" onclick="location.href='@Url.Action("Leaderboard")'" /></div>

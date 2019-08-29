@@ -1,0 +1,57 @@
+﻿@model IEnumerable<PowerliftingCapstone.Models.Thread>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ThreadTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Posts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastPost)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ThreadTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Posts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastPost)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.ThreadId }) |*@
+            @Html.ActionLink("Details", "Details", new { id=item.ThreadId })
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.ThreadId })*@
+        </td>
+    </tr>
+}
+
+</table>

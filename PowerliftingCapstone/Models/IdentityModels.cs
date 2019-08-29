@@ -49,5 +49,7 @@ namespace PowerliftingCapstone.Models
 		public DbSet<WeeklyTotal> WeeklyTotals { get; set; }
 
 		public DbSet<WorkoutSerialization> WorkoutSerializations { get; set; }
+		public DbSet<Thread> Threads { get; set; }
+		public DbSet<Post> Posts { get; set; }
 	}
 }

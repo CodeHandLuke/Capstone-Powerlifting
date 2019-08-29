@@ -11,6 +11,7 @@ namespace PowerliftingCapstone.Models
 	{
 		[Key]
 		public int ProgramId { get; set; }
+		[Display(Name = "Set Order")]
 		public int SetOrder { get; set; }
 		public int WorkoutId { get; set; }
 		public string Exercise { get; set; }
@@ -20,7 +21,8 @@ namespace PowerliftingCapstone.Models
 		[Display(Name = "Weight(kg)")]
 		public double? Weight { get; set; }
 		public bool Completed { get; set; }
-		public string Notes { get; set; }
+		public bool Notes { get; set; }
+		public string NoteText { get; set; }
 		[ForeignKey(nameof(User))]
 		public int UserId { get; set; }
 		public UserProfile User { get; set; }

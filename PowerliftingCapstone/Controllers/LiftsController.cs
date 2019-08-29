@@ -68,7 +68,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes,UserId")] Lift lift)
+        public ActionResult Create([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,NoteText,Notes,UserId")] Lift lift)
         {
             if (ModelState.IsValid)
             {
@@ -103,12 +103,22 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,Notes,UserId")] Lift lift)
+        public ActionResult Edit([Bind(Include = "ProgramId,SetOrder,WorkoutId,Exercise,OneRMPercentage,Reps,Weight,Completed,NoteText,Notes,UserId")] Lift lift)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(lift).State = EntityState.Modified;
-                db.SaveChanges();
+				if (lift.NoteText == null)
+				{
+					lift.Notes = false;
+					db.Entry(lift).State = EntityState.Modified;
+					db.SaveChanges();
+				}
+				else
+				{
+					lift.Notes = true;
+					db.Entry(lift).State = EntityState.Modified;
+					db.SaveChanges();
+				}
                 return RedirectToAction("Index");
             }
             return View(lift);
@@ -158,19 +168,22 @@ namespace PowerliftingCapstone.Controllers
 				var oneRepMaxMultiplier = item.OneRMPercentage * .01;
 				if (item.Exercise == "Squat")
 				{
-					item.Weight = squatM * oneRepMaxMultiplier;
+					double? calculatedWeight = squatM * oneRepMaxMultiplier;
+					item.Weight = Math.Round(Convert.ToDouble(calculatedWeight), 2);
 					db.SaveChanges();
 				}
 
 				else if (item.Exercise == "Benchpress")
 				{
-					item.Weight = benchMax * oneRepMaxMultiplier;
+					double? calculatedWeight = benchMax * oneRepMaxMultiplier;
+					item.Weight = Math.Round(Convert.ToDouble(calculatedWeight), 2);
 					db.SaveChanges();
 				}
 
 				else if (item.Exercise == "Deadlift" || item.Exercise == "Deadlift^Knee" || item.Exercise == "Def Deadlift" || item.Exercise == "Rackpull")
 				{
-					item.Weight = deadMax * oneRepMaxMultiplier;
+					double? calculatedWeight = deadMax * oneRepMaxMultiplier;
+					item.Weight = Math.Round(Convert.ToDouble(calculatedWeight), 2);
 					db.SaveChanges();
 				}
 			}
@@ -305,7 +318,7 @@ namespace PowerliftingCapstone.Controllers
 				newSavedWorkout.Reps = item.Reps;
 				newSavedWorkout.Weight = item.Weight;
 				newSavedWorkout.WorkoutId = item.WorkoutId;
-				newSavedWorkout.Notes = item.Notes;
+				newSavedWorkout.NoteText = item.NoteText;
 				newSavedWorkout.UserId = userId;
 				db.SavedWorkouts.Add(newSavedWorkout);
 				SavedWorkoutDateTime newSavedWorkoutDate = new SavedWorkoutDateTime();
