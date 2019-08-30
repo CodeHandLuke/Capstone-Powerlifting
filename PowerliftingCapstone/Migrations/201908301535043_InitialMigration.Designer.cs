@@ -13,7 +13,7 @@ namespace PowerliftingCapstone.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201908291335597_InitialMigration"; }
+            get { return "201908301535043_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source

@@ -15,6 +15,7 @@ namespace PowerliftingCapstone.Migrations
                         Exercise = c.String(),
                         Reps = c.Int(),
                         Weight = c.Double(),
+                        SavedWorkoutDateId = c.Int(nullable: false),
                         UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ActualTotalId)
@@ -105,6 +106,7 @@ namespace PowerliftingCapstone.Migrations
                         Exercise = c.String(),
                         Reps = c.Int(),
                         Weight = c.Double(),
+                        SavedWorkoutDateId = c.Int(nullable: false),
                         UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ExpectedTotalId)
@@ -191,12 +193,13 @@ namespace PowerliftingCapstone.Migrations
                 "dbo.SavedWorkoutDateTimes",
                 c => new
                     {
-                        SavedWorkoutDateId = c.Int(nullable: false, identity: true),
+                        SavedWorkoutDateTimeId = c.Int(nullable: false, identity: true),
                         Date = c.DateTime(nullable: false),
                         WorkoutId = c.Int(nullable: false),
+                        WorkoutNotes = c.String(),
                         UserId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.SavedWorkoutDateId)
+                .PrimaryKey(t => t.SavedWorkoutDateTimeId)
                 .ForeignKey("dbo.UserProfiles", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
@@ -212,6 +215,7 @@ namespace PowerliftingCapstone.Migrations
                         Weight = c.Double(),
                         WorkoutId = c.Int(nullable: false),
                         NoteText = c.String(),
+                        SavedWorkoutDateId = c.Int(nullable: false),
                         UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.SavedWorkoutId)

@@ -48,7 +48,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ActualTotalId,Exercise,Reps,Weight,UserId")] ActualProgramTotal actualProgramTotal)
+        public ActionResult Create([Bind(Include = "ActualTotalId,Exercise,Reps,Weight,SavedWorkoutDateId,UserId")] ActualProgramTotal actualProgramTotal)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace PowerliftingCapstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ActualTotalId,Exercise,Reps,Weight,UserId")] ActualProgramTotal actualProgramTotal)
+        public ActionResult Edit([Bind(Include = "ActualTotalId,Exercise,Reps,Weight,SavedWorkoutDateId,UserId")] ActualProgramTotal actualProgramTotal)
         {
             if (ModelState.IsValid)
             {
